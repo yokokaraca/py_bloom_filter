@@ -1,6 +1,6 @@
 [project]
 name = "py-bloom-filter"
-version = "0.1.1"
+version = "0.1.2"
 description = "A Bloom filter implementation using only the Python standard library."
 requires-python = ">=3.10"
 dependencies = []

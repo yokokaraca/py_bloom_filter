@@ -17,3 +17,10 @@ print("user:99" in bf)    # False (definitely not present, at least for now)
 This exists for the common case where you want to cheaply reject work that is definitely not needed — for example, asking "might this key already be in the cache?" before paying for a database lookup. The trade-off is that membership is probabilistic: a `True` result means "possibly present" and the false positive rate climbs past the configured `error_rate` once you exceed `capacity`. There is no automatic resizing, because resizing silently changes the guarantee mid-life and that is a surprise we are not willing to ship.
 
 The awkward edge: `len(bf)` counts insertions, not distinct items. Inserting the same key twice increments the counter both times, which is how bloom filters behave by construction but can surprise callers who expect set semantics.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
